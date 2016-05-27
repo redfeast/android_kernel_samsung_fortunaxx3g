@@ -1773,18 +1773,14 @@ static int cpufreq_governor_interactive(struct cpufreq_policy *policy,
 		break;
 
 	case CPUFREQ_GOV_LIMITS:
-		if (policy->max < policy->cur)
-			__cpufreq_driver_target(policy,
-					policy->max, CPUFREQ_RELATION_H);
-		else if (policy->min > policy->cur) {
-			__cpufreq_driver_target(policy,
-					policy->min, CPUFREQ_RELATION_L);
+		__cpufreq_driver_target(policy,
+				policy->cur, CPUFREQ_RELATION_L);
+
 #if defined(CONFIG_ARCH_MSM8929)
 			//Disable LPM Mode when scaling_min_freq set up over than hispeed freq.
 			if (policy->min >= tunables->lpm_disable_freq)
 				lpm_set_mode(cpu_mask, power_level_mask, 0);
 #endif
-		}
 		for_each_cpu(j, policy->cpus) {
 			pcpu = &per_cpu(cpuinfo, j);
 
