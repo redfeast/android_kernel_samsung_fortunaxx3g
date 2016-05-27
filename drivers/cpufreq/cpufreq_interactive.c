@@ -473,6 +473,10 @@ static void cpufreq_interactive_timer(unsigned long data)
 	cpu_load = loadadjfreq / pcpu->policy->cur;
 	boosted = tunables->boost_val || now < tunables->boostpulse_endtime;
 
+	//Limit cpu_load within 100
+	if(tunables->use_sched_load)
+		if(cpu_load > 100) cpu_load = 100;
+
 	if (cpu_load >= tunables->go_hispeed_load || boosted) {
 		if (pcpu->policy->cur < tunables->hispeed_freq) {
 			new_freq = tunables->hispeed_freq;
