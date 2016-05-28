@@ -436,6 +436,8 @@ rt5033_reg_status_ok:
 rt5033_reg_status_exit:
 	rt5033_reg_write(info->i2c, 0xf0, org_regval);
 	rt5033_unlock_regulator(info->i2c);
+	if (ret==REGULATOR_STATUS_ERROR && chip_rev >= RT5033A_REV)
+		ret = REGULATOR_STATUS_UNDEFINED; /* 8 */
 	pr_err("%s ret:%d\n", __func__, ret);
 	return ret;
 }
