@@ -104,6 +104,13 @@ config SENSORS_GP2A002_PMIC_LEDA
 	default n
 	help
 	  This option enables leda_en controlled by SM5703 using GP2A002 driver.
+	  
+config SENSORS_GP2A002_VDD_ALWAYSON
+	depends on I2C
+	tristate "GP2A002 vddvio are always on"
+	default n
+	help
+	  Say Y here if GP2A002 vddvio are always on.	  
 
 config SENSORS_LEDA_EN_GPIO
 	depends on I2C

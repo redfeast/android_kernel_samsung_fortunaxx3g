@@ -500,7 +500,11 @@ static ssize_t proximity_enable_store(struct device *dev,
 				gp2a->nondetect = PROX_NONDETECT;
 				gp2a->detect = PROX_DETECT;
 			}
+#ifdef CONFIG_SENSORS_GP2A002_VDD_ALWAYSON
+			//control is not necessary.
+#else
 			gp2a_regulator_onoff(&gp2a->i2c_client->dev, true);
+#endif
 			gp2a_power_onoff(gp2a, 1);
 			gp2a->power_state = value;
 
@@ -510,7 +514,11 @@ static ssize_t proximity_enable_store(struct device *dev,
 			input_sync(gp2a->input);
 		} else {
 			gp2a_power_onoff(gp2a, 0);
+#ifdef CONFIG_SENSORS_GP2A002_VDD_ALWAYSON
+			//control is not necessary.
+#else
 			gp2a_regulator_onoff(&gp2a->i2c_client->dev, false);
+#endif
 			gp2a->power_state = value;
 		}
 
@@ -809,7 +817,11 @@ err_input_allocate_device_proximity:
 	wake_lock_destroy(&gp2a->prx_wake_lock);
 	kfree(gp2a);
 done:
+#ifdef CONFIG_SENSORS_GP2A002_VDD_ALWAYSON
+	//control is not necessary.
+#else
 	gp2a_regulator_onoff(&client->dev, false);
+#endif
 	return ret;
 }
 
